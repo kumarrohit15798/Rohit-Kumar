@@ -1,0 +1,24 @@
+
+import pandas as pd
+"""Create Dataframe"""
+data = {'name': ['Jason', 'Molly', 'Tina', 'Jake', 'Amy'], 
+        'year': [2012, 2012, 2013, 2014, 2014], 
+        'reports': [4, 24, 31, 2, 3],
+        'coverage': [25, 94, 57, 62, 70]}
+df = pd.DataFrame(data, index = ['Cochice', 'Pima', 'Santa Cruz', 'Maricopa', 'Yuma'])
+df
+
+"""View Column"""
+df['name']
+
+"""View Two Columns"""
+df[['name', 'reports']]
+
+"""View First Two Rows"""
+df[:2]
+
+"""View Rows Where Coverage Is Greater Than 50"""
+df[df['coverage'] > 50]
+
+"""View Rows Where Coverage Is Greater Than 50 And Reports Less Than 4"""
+df[(df['coverage']  > 50) & (df['reports'] < 4)]

@@ -1,0 +1,601 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# <a href="https://www.bigdatauniversity.com"><img src="https://ibm.box.com/shared/static/cw2c7r3o20w9zn8gkecaeyjhgw3xdgbj.png" width="400" align="center"></a>
+# 
+# <h1 align="center"><font size="5">Classification with Python</font></h1>
+
+# In this notebook we try to practice all the classification algorithms that we learned in this course.
+# 
+# We load a dataset using Pandas library, and apply the following algorithms, and find the best one for this specific dataset by accuracy evaluation methods.
+# 
+# Lets first load required libraries:
+
+# In[48]:
+
+
+import itertools
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.ticker import NullFormatter
+import pandas as pd
+import numpy as np
+import matplotlib.ticker as ticker
+from sklearn import preprocessing
+get_ipython().run_line_magic('matplotlib', 'inline')
+
+
+# In[49]:
+
+
+# setting the random seed for similar results on each run
+np.random.seed(7)
+
+
+# ### About dataset
+
+# This dataset is about past loans. The __Loan_train.csv__ data set includes details of 346 customers whose loan are already paid off or defaulted. It includes following fields:
+# 
+# | Field          | Description                                                                           |
+# |----------------|---------------------------------------------------------------------------------------|
+# | Loan_status    | Whether a loan is paid off on in collection                                           |
+# | Principal      | Basic principal loan amount at the                                                    |
+# | Terms          | Origination terms which can be weekly (7 days), biweekly, and monthly payoff schedule |
+# | Effective_date | When the loan got originated and took effects                                         |
+# | Due_date       | Since it’s one-time payoff schedule, each loan has one single due date                |
+# | Age            | Age of applicant                                                                      |
+# | Education      | Education of applicant                                                                |
+# | Gender         | The gender of applicant                                                               |
+
+# Lets download the dataset
+
+# In[50]:
+
+
+get_ipython().system('wget -O loan_train.csv https://s3-api.us-geo.objectstorage.softlayer.net/cf-courses-data/CognitiveClass/ML0101ENv3/labs/loan_train.csv')
+
+
+# ### Load Data From CSV File  
+
+# In[51]:
+
+
+df = pd.read_csv('loan_train.csv')
+df.head()
+
+
+# In[52]:
+
+
+df.shape
+
+
+# ### Convert to date time object 
+
+# In[53]:
+
+
+df['due_date'] = pd.to_datetime(df['due_date'])
+df['effective_date'] = pd.to_datetime(df['effective_date'])
+df.head()
+
+
+# # Data visualization and pre-processing
+# 
+# 
+
+# Let’s see how many of each class is in our data set 
+
+# In[54]:
+
+
+df['loan_status'].value_counts()
+
+
+# 260 people have paid off the loan on time while 86 have gone into collection 
+# 
+
+# Lets plot some columns to underestand data better:
+
+# In[55]:
+
+
+# notice: installing seaborn might takes a few minutes
+# !conda install -c anaconda seaborn -y
+
+
+# In[56]:
+
+
+import seaborn as sns
+
+bins = np.linspace(df.Principal.min(), df.Principal.max(), 10)
+g = sns.FacetGrid(df, col="Gender", hue="loan_status", palette="Set1", col_wrap=2)
+g.map(plt.hist, 'Principal', bins=bins, ec="k")
+
+g.axes[-1].legend()
+plt.show()
+
+
+# In[57]:
+
+
+bins = np.linspace(df.age.min(), df.age.max(), 10)
+g = sns.FacetGrid(df, col="Gender", hue="loan_status", palette="Set1", col_wrap=2)
+g.map(plt.hist, 'age', bins=bins, ec="k")
+
+g.axes[-1].legend()
+plt.show()
+
+
+# # Pre-processing:  Feature selection/extraction
+
+# ### Lets look at the day of the week people get the loan 
+
+# In[58]:
+
+
+df['dayofweek'] = df['effective_date'].dt.dayofweek
+bins = np.linspace(df.dayofweek.min(), df.dayofweek.max(), 10)
+g = sns.FacetGrid(df, col="Gender", hue="loan_status", palette="Set1", col_wrap=2)
+g.map(plt.hist, 'dayofweek', bins=bins, ec="k")
+g.axes[-1].legend()
+plt.show()
+
+
+# ### Lets look at the Months people get the loan 
+
+# In[59]:
+
+
+df['Month'] = df.due_date.dt.month
+bins = np.linspace(df.Month.min()-1, df.Month.max()+1, 10)
+g = sns.FacetGrid(df, col="Gender", hue="loan_status", palette="Set1", col_wrap=2)
+g.map(plt.hist, 'Month', bins=bins, ec="k")
+g.axes[-1].legend()
+plt.show()
+
+
+# ### there is higher possibility that people pay off the loan in 9th month than paying it in 10th or 11th
+
+# ### **as the observation shows people who get the loan at the end of the week don't pay it off, so lets use Feature binarization to set a threshold values less then day 4**
+
+# In[60]:
+
+
+df['weekend'] = df['dayofweek'].apply(lambda x: 1 if (x>3)  else 0)
+df.head()
+
+
+# ## Convert Categorical features to numerical values
+
+# Lets look at gender:
+
+# In[61]:
+
+
+df.groupby(['Gender'])['loan_status'].value_counts(normalize=True)
+
+
+# 86 % of female pay there loans while only 73 % of males pay there loan
+# 
+
+# Lets convert male to 0 and female to 1:
+# 
+
+# In[62]:
+
+
+df['Gender'].replace(to_replace=['male','female'], value=[0,1],inplace=True)
+df.head()
+
+
+# In[63]:
+
+
+df['deadline']=df['due_date']-df['effective_date']
+
+df.head()
+
+
+# In[64]:
+
+
+df['deadline']=df['deadline'].dt.days
+df.head(3)
+
+
+# ### *based on the tested rusults columns Month and deadline doesn't improve the result so we will not use them in feature sets of training
+
+# ## One Hot Encoding  
+# #### How about education?
+
+# In[65]:
+
+
+df.groupby(['education'])['loan_status'].value_counts(normalize=True)
+
+
+# **There are only two people with Master or Above degress,one of them has paid off the loan and the other one hasn't.As a result keeping 'Master or Above' in our data set wont't help much! so we drop it.**
+
+# In[66]:
+
+
+len(df[df.education=='Master or Above'])
+
+
+# #### We use one hot encoding technique to convert categorical variables to binary variables and append them to the feature Data Frame 
+
+# In[67]:
+
+
+Feature = df[['Principal','terms','age','Gender','weekend','dayofweek']]
+Feature = pd.concat([Feature,pd.get_dummies(df['education'])], axis=1)
+Feature.drop(['Master or Above'], axis = 1,inplace=True)
+Feature.head()
+
+
+# ## Feature selection
+
+# ### Our data without label
+
+# In[68]:
+
+
+X = Feature
+X[0:5]
+
+
+# ### Our labels
+
+# In[69]:
+
+
+# We encode our labels as 0 and 1 s
+y = df['loan_status'].replace(to_replace=['PAIDOFF','COLLECTION'], value=[0,1]).values
+y[0:5]
+
+
+# ## Normalize Data 
+
+# Data Standardization give data zero mean and unit variance 
+
+# In[70]:
+
+
+X= preprocessing.StandardScaler().fit_transform(X)
+X[0:5]
+
+
+# In[71]:
+
+
+# import scoring methods
+from sklearn.metrics import jaccard_similarity_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import log_loss
+from sklearn.model_selection import cross_val_score
+
+
+# In[72]:
+
+
+# our data for training (used '_train' just for improving readability)
+X_train, y_train=X,y
+
+
+# In[73]:
+
+
+X_train.shape, y_train.shape
+
+
+# In[74]:
+
+
+# a dictionary for keeping all scores of the classifiers
+trainScores={}
+
+
+# # K Nearest Neighbor(KNN)
+
+# In[75]:
+
+
+from sklearn.neighbors import KNeighborsClassifier
+
+bestScore=0.0
+accList=[]
+
+for k in range(3,12):
+    
+    clf_knn = KNeighborsClassifier(n_neighbors=k,algorithm='auto')
+    
+    # using 10 fold cross validation for scoring the classifier's accuracy
+    scores = cross_val_score(clf_knn, X, y, cv=10)
+    score=scores.mean()
+    accList.append(score)
+    
+    if score > bestScore:
+        bestScore=score
+        best_clf=clf_knn
+        bestK=k
+        
+print("Best K is :",bestK,"| Cross validation Accuracy :",bestScore)
+clf_knn=best_clf
+
+
+# In[76]:
+
+
+clf_knn.fit(X_train,y_train)
+y_pred=best_clf.predict(X_train)
+
+
+# In[77]:
+
+
+trainScores['KNN-jaccard']=jaccard_similarity_score(y_train, y_pred)
+trainScores['KNN-f1-score']=f1_score(y_train, y_pred, average='weighted')  
+
+
+# In[78]:
+
+
+trainScores
+
+
+# In[79]:
+
+
+plt.plot(range(3,12),accList)
+plt.xlabel('K')
+plt.ylabel('CV Accuracy')
+plt.show()
+
+
+# # Decision Tree
+
+# In[80]:
+
+
+from sklearn import tree
+
+clf_tree = tree.DecisionTreeClassifier()
+clf_tree = clf_tree.fit(X_train, y_train)
+
+y_pred=clf_tree.predict(X_train)
+
+
+# In[81]:
+
+
+trainScores['Tree-jaccard']=jaccard_similarity_score(y_train, y_pred)
+trainScores['Tree-f1-score']=f1_score(y_train, y_pred, average='weighted')  
+
+
+# In[82]:
+
+
+trainScores
+
+
+# ### Visualizng the tree
+
+# In[83]:
+
+
+get_ipython().system('pip install graphviz')
+get_ipython().system('pip install pydotplus')
+import graphviz 
+import pydotplus
+
+dot_data = tree.export_graphviz(clf_tree, out_file=None, 
+                     feature_names=['Principal',
+                                    'terms','age',
+                                    'Gender',
+                                    'weekend',
+                                    'Bechalor',
+                                    'High School or Below',
+                                    'college',
+                                    'dayofweek',
+                                     #'deadline'
+#                                     ,'Month'
+                                   ],  
+                     class_names='loan_status',  
+                     filled=True, rounded=True,  
+                     special_characters=True) 
+
+graph = pydotplus.graph_from_dot_data(dot_data)
+graph.set_size('"8,8!"')
+gvz_graph = graphviz.Source(graph.to_string())
+
+gvz_graph 
+
+
+# # Support Vector Machine
+
+# In[ ]:
+
+
+y_train=y_train.astype(float)
+
+
+# In[ ]:
+
+
+from sklearn import svm
+
+clf_svm = svm.LinearSVC(random_state=7)
+clf_svm.fit(X_train, y_train)  
+
+y_pred=clf_svm.predict(X_train)
+
+
+# In[ ]:
+
+
+trainScores['SVM-jaccard']=jaccard_similarity_score(y_train, y_pred)
+trainScores['SVM-f1-score']=f1_score(y_train, y_pred, average='weighted')  
+
+
+# In[ ]:
+
+
+trainScores
+
+
+# # Logistic Regression
+
+# In[ ]:
+
+
+from sklearn.linear_model import LogisticRegression
+
+clf_log = LogisticRegression(random_state=0, solver='lbfgs',
+                         multi_class='multinomial')
+clf_log.fit(X_train, y_train)
+
+y_pred=clf_log.predict(X_train)
+y_proba=clf_log.predict_proba(X_train)
+
+
+# In[ ]:
+
+
+
+testScores['LogReg-logLoss']=log_loss(testy, proba)
+
+trainScores['LogReg-jaccard']=jaccard_similarity_score(y_train, y_pred)
+trainScores['LogReg-f1-score']=f1_score(y_train, y_pred, average='weighted')  
+trainScores['LogReg-logLoss']=log_loss(y_train, y_proba)
+
+
+# In[ ]:
+
+
+trainScores
+
+
+# # Model Evaluation using Test set
+
+# In[ ]:
+
+
+get_ipython().system('wget -O loan_test.csv https://s3-api.us-geo.objectstorage.softlayer.net/cf-courses-data/CognitiveClass/ML0101ENv3/labs/loan_test.csv')
+
+
+# ### Load Test set for evaluation 
+
+# In[ ]:
+
+
+test_df = pd.read_csv('loan_test.csv')
+test_df.head()
+
+
+# In[ ]:
+
+
+test_df['due_date'] = pd.to_datetime(test_df['due_date'])
+test_df['effective_date'] = pd.to_datetime(test_df['effective_date'])
+
+test_df['dayofweek'] = test_df['effective_date'].dt.dayofweek
+
+test_df['weekend'] = test_df['dayofweek'].apply(lambda x: 1 if (x>3)  else 0)
+
+test_df['Gender'].replace(to_replace=['male','female'], value=[0,1],inplace=True)
+
+# test_df['Month'] = test_df.due_date.dt.month 
+
+# test_df['deadline']=test_df['due_date']-test_df['effective_date']
+# test_df['deadline']=test_df['deadline'].dt.days
+
+Feature = test_df[['Principal','terms','age','Gender','weekend','dayofweek']]
+Feature = pd.concat([Feature,pd.get_dummies(test_df['education'])], axis=1)
+Feature.drop(['Master or Above'], axis = 1,inplace=True)
+
+X = Feature
+
+y = test_df['loan_status'].replace(to_replace=['PAIDOFF','COLLECTION'], value=[0,1]).values
+
+testy=y.astype(float)
+testX= preprocessing.StandardScaler().fit_transform(X)
+
+
+# In[ ]:
+
+
+testScores={}
+
+
+# In[ ]:
+
+
+knn_pred=clf_knn.predict(testX)
+testScores['KNN-jaccard']=jaccard_similarity_score(testy, knn_pred)
+testScores['KNN-f1-score']=f1_score(testy, knn_pred, average='weighted')  
+
+
+# In[ ]:
+
+
+tree_pred=clf_tree.predict(testX)
+testScores['Tree-jaccard']=jaccard_similarity_score(testy, tree_pred)
+testScores['Tree-f1-score']=f1_score(testy, tree_pred, average='weighted')  
+
+
+# In[ ]:
+
+
+svm_pred=clf_svm.predict(testX)
+testScores['SVM-jaccard']=jaccard_similarity_score(testy, svm_pred)
+testScores['SVM-f1-score']=f1_score(testy, svm_pred, average='weighted')  
+
+
+# In[ ]:
+
+
+log_pred=clf_log.predict(testX)
+proba=clf_log.predict_proba(testX)
+testScores['LogReg-jaccard']=jaccard_similarity_score(testy, log_pred)
+testScores['LogReg-f1-score']=f1_score(testy, log_pred, average='weighted')  
+testScores['LogReg-logLoss']=log_loss(testy, proba)
+
+
+# In[84]:
+
+
+trainScores
+
+
+# In[85]:
+
+
+testScores
+
+
+# In[86]:
+
+
+# Features used
+list(Feature.columns)
+
+
+# # Reports
+
+# | Algorithm          | Jaccard | F1-score | LogLoss |
+# |--------------------|---------|----------|---------|
+# | KNN                | 0.7407  | 0.7144   | NA      |
+# | Decision Tree      | 0.7592  | 0.7618   | NA      |
+# | SVM                | 0.7592  | 0.6959   | NA      |
+# | LogisticRegression | 0.7777  | 0.7089   | 0.4947  |
+
+# ### Even though Decision tree had shown a relatively good result in trainig  ,but it is  Logistic Regression that out-performs the other models in test  .
+
+# #### out tree model suffers from over-fitting
+
+# In[ ]:
+
+
+

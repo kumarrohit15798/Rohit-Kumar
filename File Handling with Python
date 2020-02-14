@@ -1,0 +1,301 @@
+# Rohit-Kumar
+
+#!/usr/bin/env python
+# coding: utf-8
+
+# # File Handling with Python
+
+# THe key function for working with file in python open() function.
+# 
+# The open() function takes two parameters; filename nad mod.
+# 
+# There are four diffrent method (modes) for open file:
+
+# "r" Read-Default value opens a file for reding error if the file does not exist
+# 
+# "a" Append opens a file for appinging creating the file if it dose not exist
+# 
+# "W" write Open a file writing creates the file if it does not exist
+# 
+# "X" Create creates the specified file returns an error if the file exist
+
+# in addition you can specify if the file should be handle as binary or text mode
+
+# "t" Text - Default value Text mode 
+# 
+# "b" Binary Binary mode
+
+# # Sntax
+
+# To open a file reding it is enough to specify the name of the file:
+
+# # how to Create in python
+
+# In[2]:
+
+
+f = open("test_create.txt","w+")
+
+
+# In[3]:
+
+
+"""We have a for loop that runs over a range of 10 numbers.
+Using the write function to enter data into the file.
+The output we want to iterate in the file is "this is line number", which we declare with write function and then percent d (displays integer)
+So basically we are putting in the line number that we are writing, then putting it in a carriage return and a new line character"""
+
+for i in range(10):
+    f.write("my baby is shivi %d\r\n" %(i+1)) 
+f.close()
+
+
+# # How to Appemd Data to a File
+
+# In[4]:
+
+
+f = open("test_create.txt","a+")
+
+
+# In[5]:
+
+
+for i in range(2):
+    f.write("aaj phir tum par pyar aya hai %d\r\n" %(i+1))
+    
+f.close()
+
+
+# In[6]:
+
+
+def main():
+    f = open("test_create.txt","a+")# open file on append function "a+"
+    
+    for i in range(4):# fure line print
+        f.write("hay baby baby %d\r\n" %(i+1))# value print with (i+1) data incrment
+        
+    f.close() # close file
+    
+if __name__=="__main__":
+    main()
+
+
+# # How to Read a file
+
+# In[7]:
+
+
+f = open("test_create.txt","r")
+
+
+# In[8]:
+
+
+if f.mode == "r":
+    print("open file")
+
+
+# In[9]:
+
+
+contents = f.read()
+
+
+# In[10]:
+
+
+print(contents)
+
+
+# In[11]:
+
+
+def main():
+    f = open("test_create.txt","r")#open file on read
+    
+    if f.mode == "r": # mode read file on operastion read
+        contents = f.read()#all store contentes file
+        print(contents)# print contents
+        
+if __name__=="__main__":
+    main()
+
+
+# In[12]:
+
+
+def main():
+    f = open("test_create.txt","r")
+    
+    f1 = f.readlines()
+    for x in f1:
+        print(x)
+        
+if __name__=="__main__":
+    main()
+
+
+# # Python Flie Open
+
+# To open the, use the built-in open() function.
+# 
+# The open() function return a file object, which has a read() method for reading the content of the file
+
+# In[13]:
+
+
+f = open("test_create.txt", "r")
+print(f.read())
+
+
+# Read Only parts of the File
+
+# In[14]:
+
+
+f = open("test_create.txt","r")
+print(f.read(100))
+
+
+# # Reding Lines
+
+# In[15]:
+
+
+f = open("test_create.txt","r")
+print(f.readlines())
+
+
+# In[16]:
+
+
+f = open("test_create.txt","r")
+print(f.readline())
+print(f.readline())
+
+
+# In[17]:
+
+
+#Loop through the file line by line 
+
+f = open("test_create.txt","r")
+for x in f:
+    print(x)
+
+
+# In[ ]:
+
+
+
+
+
+# # Close File
+
+# In[18]:
+
+
+# Close the fole when you are finish with it:
+
+f = open("test_create.txt","r")
+print(f.readline())
+f.close()
+
+
+# # Python File Write
+
+# In[19]:
+
+
+f = open("test_create.txt","a")
+f.write("now the file has more content!")
+f.close()
+
+
+# In[20]:
+
+
+f = open("test_create.txt","w") #write function used but problem to delete value preavesh
+f.write("Something something Something")
+f.close()
+
+
+# In[21]:
+
+
+f = open("test_create.txt","r")
+print(f.read())
+
+
+# # Create a New File
+
+# To create a new file in python, use the open() method, with one of the following parameters:
+#     
+# "x" Create will create a file , returen an error if the file exist
+#     
+# "a" Append will create a file if the specified file does not exist
+# 
+# "w" Write will create a file if the specified file does not exist
+
+# In[22]:
+
+
+f = open("myfile.txt","x")# Result : a new empty file is created!
+
+
+# In[23]:
+
+
+#Create a new file it does not exist:
+
+f = open("myfile_1.txt","w")
+
+
+# # Python Delete file
+
+# To delete a file, you must import the OS module, and run its OS.removed() function:
+
+# In[24]:
+
+
+# Remove the file "myfile_1":
+
+import os
+
+os.remove("myfile_1.txt")
+
+
+# # Check f File exist:
+
+# To avoid getting an error, you might want to check if the exists before you try to delete it:
+#     
+
+# In[25]:
+
+
+import os
+if os.path.exists("myfile_1.txt"):
+    os.remove("myfile_1")
+else:
+    print("The file does not exist")
+
+
+# # Delete Folder
+
+# In[26]:
+
+
+# Remove the folder"any folder"
+
+import os
+os.rmdir("name")
+
+
+# #                                END
+
+# In[ ]:
+
+
+

@@ -1,0 +1,742 @@
+# Rohit-Kumar
+  // Student grade function on marks; 
+
+import java.util.*;
+public class Else {
+	public static void main(String[] yashi) {
+		int marks;
+		char grade;
+		Scanner input = new Scanner(System.in);
+		System.out.println("Enter the number ");
+		marks = input.nextInt();
+		if(marks >= 85) {
+			grade = 'A';
+		}
+		else if (marks >= 75) {
+			grade = 'B';
+		}
+		else if(marks >= 65) {
+			grade = 'C';
+			
+		}else {
+			grade = 'D';
+		}
+		System.out.println("grade of student = " + grade);
+	}
+
+}
+
+// Salary => 10000 and bonuse = 10%
+
+import java.util.*; 
+public class Abouns {
+	public static void main(String[] yashi) {
+		int salary, bonus;
+		Scanner input = new Scanner(System.in);
+		System.out.println("Enter the number ");
+		salary = input.nextInt();
+		if(salary >= 10000) {
+			
+			bonus = (salary*10)/100;
+			salary = salary+bonus;
+		}
+		
+		System.out.println("salary and bonus " + salary);
+		
+	}
+
+}
+
+
+public class Add {
+	public static void main(String[] yashi) {
+		int day = 4;
+		switch(day) {
+		case 1:
+		    System.out.println("Monday");
+		    break;
+		case 2:
+			System.out.println("Tuseday");
+			break;
+		case 3:
+			System.out.println("Wednesday");
+			break;
+		case 
+		
+		4:
+			System.out.println("Thursday");
+			break;
+		case 5:
+			System.out.println("Friday");
+			break;
+		case 6:
+			System.out.println("Saturday");
+			break;
+		case 7:
+			System.out.println("sunday");
+			break;
+		///Note that if the default statement is used as the last statement in a switch block, it does not need a break.
+
+			
+		}
+		
+		int month = 2;
+		switch(month) {
+		case 3:
+			System.out.println("march");
+			break;
+		case 4:
+			System.out.println("Aprile");
+			break;
+		case 5: 
+			System.out.println("may");
+			break;
+		default:
+			System.out.println("default value within method");
+		}
+	}
+}
+
+// simpal Array 
+public class Array {
+	public static void main(String[] yashi) {
+		String[] cars = {"toyota","mahidra","bmw","frari","labogni"};
+		for(String i : cars) {
+			System.out.println(i);
+		}
+	}
+
+}
+
+
+public class Arrays {
+	public static void main(String[] yashi) {
+		String[] cars = {"maruti","mahidira","totoya","lombani \n"};
+		
+		System.out.println(cars[2]);
+		
+		//To change the value of a specific element, refer to the index number:
+		String[] carr = {"mangan","yashi","totoya","lombani"};
+		carr[0] = "frore";
+		System.out.println(carr[0]);
+		//To find out how many elements an array has, use the length property:
+		System.out.println(carr.length);
+		
+		//Loop Through an Array
+		for(int i=0; i < cars.length; i++) {
+			System.out.println(i);
+			
+			//Loop Through an Array with For-Each
+		}
+		for(String i : cars) {
+			System.out.println(i);
+		}
+		
+		//Multidimensional Arrays
+		
+		int[][] Number = {{1,2,3,4,5},{6,7,8,9,10}};
+		int x = Number[1][2];
+		System.out.println(x);
+		
+		
+		//We can also use a for loop inside another for loop to get the elements of a two-dimensional array (we still have to point to the two indexes):
+		int[][] myNum = {{1,2,3,4},{5,6,7}};
+		
+		for(int i=0; i < myNum.length; i++) {
+			for(int j=0; j < myNum[i].length; j++) {
+				
+				System.out.println("\n"+myNum[i][j]);
+				
+				
+			}
+		}
+	}
+	
+
+}
+
+
+//Alternatively, you can use ASCII values to display certain characters:
+public class Ascii {
+	public static void main(String[] yashi) {
+		char a = 65, b = 62; //ASCII value
+		System.out.println(a);
+		System.out.println(b);
+	}
+
+}
+
+
+// Assigement operater
+public class Assigement {
+	public static void main(String[] yashi) {
+		int x = 10;
+		x += 10;
+		System.out.println("Assigement opreater  = " + x);
+	}
+
+}
+
+
+// Squre function 
+
+import java.util.Scanner;
+public class Atest {
+	public static void main(String[] yashi) {
+		
+		int no;
+		Scanner input = new Scanner(System.in);
+		System.out.println("Ebter the number");
+		no = input.nextInt();
+		System.out.println("output " +(no*no));
+	}
+
+}
+
+
+// Nested if ststmentent loop
+import java.util.*;
+public class Autil {
+	public static void main(String[] yashi) {
+		
+		Scanner obj = new Scanner(System.in);
+		int a,b,c;
+		System.out.println("Enter the number");
+		a = obj.nextInt();
+		System.out.println("Enter the second number");
+		b = obj.nextInt();
+		System.out.println("Enter the third number");
+		c = obj.nextInt();
+		if(a>b) {
+			if(a>c) {
+				System.out.println("Greater value_a = " + a);
+			}else {
+				System.out.println("Greater value_c = " + c);
+			}
+		}else {
+			if(b>c) {
+				System.out.println("Greater value_b = " + b);
+			}else {
+				System.out.println("Greater value_c = "+ c);
+			}
+		}
+	}
+
+}
+
+
+// salary input 10000 increge salary in 10% Bonus and less 5% bonus;
+
+import java.util.*;
+public class Bonus {
+	public static void main(String[] yashi) {
+		int salary;
+		int bonus;
+		Scanner input = new Scanner(System.in);
+		System.out.println("Enter the number ");
+		salary = input.nextInt();
+		if(salary > 10000) {
+			bonus = (salary*10)/100;
+			salary = salary+bonus;
+		}
+		else {
+			bonus =(salary*5)/100;
+			salary = salary+bonus;
+			
+		}
+		
+		System.out.println("Final salary " + salary);
+	}
+
+}
+
+
+//A boolean data type is declared with the boolean keyword and can only take the values true or false:
+public class Bool {
+	public static void main(String[] args) {
+		boolean T = true;
+		boolean F = false;
+		System.out.println("check condiction 'Ture and False' = " + T);
+		System.out.println("check condiction 'Ture and False' = " + F);
+	}
+
+}
+//Boolean values are mostly used for conditional testing, which you will learn more about in a later chapter.
+
+//The byte data type can store whole numbers from -128 to 127. 
+//This can be used instead of int or other integer types to save memory
+//when you are certain that the value will be within -128 and 127:
+public class Byte {
+	public static void main(String[] yashi) {
+		byte myNum = 100;
+		System.out.println("The byte number in check " + myNum);
+		
+	}
+
+}
+
+
+
+public class Cbw {
+	public static void main(String[] yashi) {
+		int x=0;
+		while (x < 10) {
+			System.out.println("\n"+x);
+			x++;
+			if(x==5) {
+				break;
+			}
+		}
+		
+		int y=0;
+		while(y < 10) {
+			if(y == 5) {
+				y++;
+				continue;
+			}
+			System.out.println(y);
+			y++;
+		}
+	}
+
+}
+
+// Change the value of myNum from 15 to 20
+public class Chang {
+	public static void main(String[] yashi) {
+		int myNum = 15;
+		myNum = 20;
+		System.out.println("Change the value "+ myNum);
+	}
+
+}
+
+
+//The char data type is used to store a single character. 
+//The character must be surrounded by single quotes, like 'A' or 'c':
+public class Char {
+	public static void main(String[] yashi) {
+		char myChar = 'A';//letter used only single quotes
+		System.out.println(myChar);
+	}
+
+}
+
+
+public class Comparison {
+	public static void main(String[] yashi) {
+		int x = 10;
+		int y = 15;
+		int z = 3;
+		System.out.println("Equal to" + (x==y));
+		System.out.println("Not equal" + (y!=z));
+		System.out.println("Gretar than = " +(x > y));
+		System.out.println("less than = "+(x < y));
+		System.out.println("gretar than equal "+(x>=y));
+		System.out.println("less than equal " +(x <= z));
+		
+	}
+
+}
+
+
+// String Concatenation
+public class Concatenation {
+	public static void main(String[] yashi) {
+		String firstName = "R.Mangan Maharaj";
+		String secondName = "Yashi kesarwani";
+		System.out.println(firstName + " Love " + secondName);
+		//You can also use the concat() method to concatenate two strings:
+		System.out.println(firstName.concat(secondName));
+		
+		//The sequence \"  inserts a double quote in a string:
+		//String txt = "This is my "love" yashi kesarwani";
+		String txt = "This is my \"love\"yashi kesarwani";
+		System.out.println(txt);
+		
+		//The sequence \'  inserts a single quote in a string:
+		String txt1 = "This is my loves\'s  yashi kesarwani";
+		System.out.println(txt1);
+		
+		//The sequence \\  inserts a single backslash in a string:
+		
+		String txt2 = "This is my loves \\ yashi kesarwani";
+		System.out.println(txt2);
+		
+		// new line
+		String txt3 = "This is my love \n yashi kesarwani";
+		System.out.println(txt3);
+		
+		// Carriage Return
+		String txt4 = "This is my\r love  yashi kesarwani";
+		System.out.println(txt4);
+		
+		//Tab
+		String txt5 = "This is \t my love  yashi kesarwani";
+		System.out.println(txt5);
+		
+		// Backspace
+		
+		String txt6 = "This is my baby \b name yashi";
+		System.out.println(txt6);
+		
+		///  \f 	Form Feed 	
+		
+		String txt7 = "This is my \f baby name yashi";
+		System.out.println(txt7);
+		
+		
+		// Adding Numbers and Strings
+		
+		String x = "20";
+		String y = "20";
+		System.out.println(x+y);
+		
+		String z = "20";
+		int a = 20;
+		String q = a + z;
+		System.out.println(q);
+		
+	
+	}
+
+}
+
+// 1 to 100 even number print
+public class Do {
+	public static void main(String[] yashi) {
+		int no = 0;
+		do {
+			no = no+2;
+			System.out.println("Even number = " +no);	
+		}
+		while(no < 100);
+	}
+
+}
+// 1 to 100 even number print
+public class Do {
+	public static void main(String[] yashi) {
+		int no = 0;
+		do {
+			no = no+2;
+			System.out.println("Even number = " +no);	
+		}
+		while(no < 100);
+	}
+
+}
+
+// Student grade function on marks; 
+
+import java.util.*;
+public class Else {
+	public static void main(String[] yashi) {
+		int marks;
+		char grade;
+		Scanner input = new Scanner(System.in);
+		System.out.println("Enter the number ");
+		marks = input.nextInt();
+		if(marks >= 85) {
+			grade = 'A';
+		}
+		else if (marks >= 75) {
+			grade = 'B';
+		}
+		else if(marks >= 65) {
+			grade = 'C';
+			
+		}else {
+			grade = 'D';
+		}
+		System.out.println("grade of student = " + grade);
+	}
+
+}
+
+
+//The float data type can store fractional numbers from 3.4e−038 to 3.4e+038. 
+//Note that you should end the value with an "f":
+public class Float {
+	public static void main(String[] yashi) {
+		float myNum = 58.233f;
+		System.out.println("Check the float nimber " + myNum);
+	}
+
+}
+
+
+
+// for loop condiction
+public class Forloop {
+	public static void main(String[] args) {
+
+		for(int i=1; i < 11; i++ ) {
+			System.out.println(i);
+		}
+		
+		for(int j=0; j <= 10; j=j+2) {
+			System.out.println("even number = " +j);
+		}
+		for(int x = 1; x <= 11; x = x+2) {
+			System.out.println("odd number = "+ x);
+		}
+	}
+
+}
+
+
+// for example * print
+public class Labeled {
+	public static void main(String[] yashi) {
+		int i,j;
+		for(i=1; i <= 5; i++) {
+			for(j=1; j <= 5; j++) {
+				System.out.println("*");
+			}
+			System.out.println(" ");
+		}
+		
+		Loop1: for(i=0; i <= 10; i++) {
+			System.out.println(" ");
+			if (i == 5) {
+				break;
+			}
+			for(j = 0; j <= 5; j++) {
+				System.out.println("*");
+				if(i==j) {
+					continue Loop1;
+				}
+			}
+		}
+	}
+	
+
+}
+
+
+//Break statement :- Jumping a part of a loop 
+public class Lbreak {
+	public static void main(String[] yashi) {
+		int y;
+		for(y=0; y<10; y++) {
+			
+			if(y==5) {
+				break;
+			}
+			System.out.println("y_ value  " + y);
+		}
+// continue statement : Skipping one part of continue program	
+		int i;
+		for(i=0; i<10; i++) {
+			if(i==5) {
+				continue;
+			}
+			System.out.println("\n i _ value "+ i);
+		}
+	}
+
+}
+
+// logical operastion
+public class Logical {
+	public static void main(String[] args) {
+		int x = 2;
+		int y = 10;
+		System.out.println(x < 5 &&  x < 10);
+		System.out.println(x < 5 ||  x < 10);
+		System.out.println (!(x < 5 &&  x < 10));
+		
+	}
+
+}
+// Mathmatics operater
+public class Math {
+	public static void main(String[] args) {
+		int a = 10;
+		
+		int b = 20;
+		
+		System.out.println(a+b);
+		System.out.println(b/a);
+		System.out.println(a-b);
+		System.out.println(a*b);
+	}
+
+}
+
+
+// java math
+public class Mathjava {
+	public static void main(String[] args) {
+		int a =15;
+		int b = 10;
+		
+		
+		// max function
+		System.out.println(java.lang.Math.max(a,b));  
+		
+		// min function
+		System.out.println(java.lang.Math.min(a,b));
+		
+		// The Math.sqrt(x) method returns the square root of x:
+		System.out.println(java.lang.Math.sqrt(a));
+		
+		//The Math.abs(x) method returns the absolute (positive) value of x:
+		
+		System.out.println(java.lang.Math.abs(-4.8));
+		
+		//Math.random() returns a random number between 0 (inclusive), and 1 (exclusive):
+		System.out.println(java.lang.Math.random());
+	}
+
+}
+
+
+// Nested if statement in java
+import java.util.*;
+public class Nested {
+	public static void main(String[] yashi) {
+		Scanner obj = new Scanner(System.in);
+		int a,b,c;
+		 System.out.println("Enter the first number _A");
+		 a = obj.nextInt();
+		 System.out.println("Enter the Second number_B");
+		 b = obj.nextInt();
+		 System.out.println("Enter the third number_C");
+		 c = obj.nextInt();
+		 if(a>b) {
+			 if(a>c) {
+				 System.out.println("Greater value = " +a);
+			 }else {
+				 System.out.println("Greater value = " +c);
+			 }
+		 }if(b>c) {
+			 System.out.println("Greater value = " +b);
+		 }else {
+			 System.out.println("Greater value = " +c);
+		 }
+		
+	}
+
+}
+
+public class Operators {
+	public static void main(String[] yashi) {
+		int x = 10;
+		int y = 5;
+		int z = 3;
+		//Adds together two values 
+		System.out.println("Addistion number =" + (x+y));
+		// Subtracts one value from another
+		System.out.println("sub function ="+ (x-y));
+		//Multiplies two values
+		System.out.println("multipale number =" + (x*z));
+		//Divides one value from another
+		System.out.println("divide the number =" + (x/y));
+		// Modulus, Returns the division remainder
+		System.out.println("model method = " + (x%z));
+		//Increment, Increases the value of a variable
+		++x;
+		System.out.println("Increment value = "+x);
+		//Decrement, Decreases the value of a variable
+		--y;
+		System.out.println("Decrement value = " +y);
+		
+		
+		
+	}
+
+}
+
+
+// Boolean function
+public class Sbool {
+	public static void main(String[] args) {
+		boolean yashi = true;
+		boolean mangan = false;
+		System.out.println(yashi);
+		System.out.println(mangan);
+		
+		int x = 10;
+		int  y= 20;
+		System.out.println(x < y);
+		
+		System.out.println(x == 10);
+		System.out.println(10 == 15); 
+		
+	}
+
+}
+
+
+//A floating point number can also be a scientific number with an "e" to indicate the power of 10:
+public class Science {
+	public static void main(String[] args) {
+		float myNum= 12e3f;
+		double myNumf = 12E3d;
+		System.out.println("float function e(n^10) =" +myNum);
+		System.out.println("double function E(n^10) =" + myNumf);
+	}
+
+}
+
+
+// while loop
+public class While {
+	public static void main(String[] args) {
+		int x =10;
+		while(x < 21) {
+			System.out.println("The x value = "+ x);
+			x++;
+		}
+		
+		int y = 5;
+		do {
+			System.out.println(y);
+			y++;
+		}
+		while(y < 11);
+	}
+
+}
+
+
+// if condistion
+public class Yashi {
+	public static void main(String[] yashi) {
+		int x = 20;
+		int y = 30;
+		int time = 12;
+		if (x < y) {
+			System.out.println("x is greater than y ");
+		}
+		
+		if (x < 10) {
+			System.out.println("x is greater than 30");
+		}else {
+			
+			System.out.print("X is not greater than 30\n");
+
+		}
+		
+		if (time < 10) {
+			System.out.println("good day");
+		}else if(time < 11) {
+			System.out.println("Good moring");
+		}else {
+			System.out.println("Good evening");
+		}
+		
+		//Short Hand If...Else (Ternary Operator)
+		int times = 20;
+		
+		String result;
+		
+		result = (times < 19) ? "Good day." : "Good moring.";
+		System.out.println(result);
+		
+	}
+
+}
+
